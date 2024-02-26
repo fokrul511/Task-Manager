@@ -13,7 +13,9 @@ class _SingInScreenState extends State<SingInScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BackgroundWidget(
-       child: Column(children: []),
+       child: Column(children: [
+
+       ]),
       ),
     );
   }
