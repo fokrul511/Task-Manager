@@ -19,80 +19,82 @@ class _SingInScreenState extends State<SingInScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BackgroundWidget(
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: Form(
-            key: _globalKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 100.0),
-                Text('Get Started With',
-                    style: Theme.of(context).textTheme.titleLarge),
-                const SizedBox(height: 30),
-                TextFormField(
-                  controller: _emailTEController,
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: const InputDecoration(hintText: 'Email'),
-                ),
-                const SizedBox(height: 10),
-                TextFormField(
-                  controller: _passwordTEController,
-                  obscureText: true,
-                  decoration: const InputDecoration(
-                    hintText: 'Password',
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Form(
+              key: _globalKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 100.0),
+                  Text('Get Started With',
+                      style: Theme.of(context).textTheme.titleLarge),
+                  const SizedBox(height: 30),
+                  TextFormField(
+                    controller: _emailTEController,
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: const InputDecoration(hintText: 'Email'),
                   ),
-                ),
-                const SizedBox(height: 16),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () {},
-                    child: const Icon(Icons.arrow_circle_right_outlined),
-                  ),
-                ),
-                const SizedBox(
-                  height: 48,
-                ),
-                Center(
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => EmailVarificationScreen(),));
-                    },
-                    style: TextButton.styleFrom(
-                      foregroundColor: Colors.grey,
-                      textStyle: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
+                  const SizedBox(height: 10),
+                  TextFormField(
+                    controller: _passwordTEController,
+                    obscureText: true,
+                    decoration: const InputDecoration(
+                      hintText: 'Password',
                     ),
-                    child: const Text('Forget Password'),
                   ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      "Don't have an Account?",
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.black54,
-                      ),
+                  const SizedBox(height: 16),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      child: const Icon(Icons.arrow_circle_right_outlined),
                     ),
-                    TextButton(
+                  ),
+                  const SizedBox(
+                    height: 48,
+                  ),
+                  Center(
+                    child: TextButton(
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => SingUpScreen(),
-                          ),
-                        );
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => EmailVarificationScreen(),));
                       },
-                      child: const Text('Sing Up'),
+                      style: TextButton.styleFrom(
+                        foregroundColor: Colors.grey,
+                        textStyle: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      child: const Text('Forget Password'),
                     ),
-                  ],
-                ),
-              ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        "Don't have an Account?",
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.black54,
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SingUpScreen(),
+                            ),
+                          );
+                        },
+                        child: const Text('Sing Up'),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),

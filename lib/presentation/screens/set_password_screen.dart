@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:task_manager/presentation/screens/pin_varification_screen.dart';
 import 'package:task_manager/presentation/screens/sing_in_screen.dart';
-import 'package:task_manager/presentation/screens/sing_up_screen.dart';
 import 'package:task_manager/presentation/widgets/background_widget.dart';
 
-class EmailVarificationScreen extends StatefulWidget {
-  const EmailVarificationScreen({super.key});
+class SetPasswordScreen extends StatefulWidget {
+  const SetPasswordScreen({super.key});
 
   @override
-  State<EmailVarificationScreen> createState() =>
-      _EmailVarificationScreenState();
+  State<SetPasswordScreen> createState() => _SetPasswordScreenState();
 }
 
-class _EmailVarificationScreenState extends State<EmailVarificationScreen> {
+class _SetPasswordScreenState extends State<SetPasswordScreen> {
   final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
-  final TextEditingController _emailTEController = TextEditingController();
+  final TextEditingController passwordTEController = TextEditingController();
+  final TextEditingController confirmpasswordTEController =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -29,11 +28,11 @@ class _EmailVarificationScreenState extends State<EmailVarificationScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 100.0),
-                  Text('Your Email Address',
+                  Text('Set Password',
                       style: Theme.of(context).textTheme.titleLarge),
                   const SizedBox(height: 4.0),
                   const Text(
-                    "A 6 digit verification pin will send to your email address",
+                    "Minimum length password 8 charecter with Latter and number combination",
                     style: TextStyle(
                       fontSize: 16,
                       color: Colors.grey,
@@ -41,23 +40,28 @@ class _EmailVarificationScreenState extends State<EmailVarificationScreen> {
                   ),
                   const SizedBox(height: 24.0),
                   TextFormField(
-                    controller: _emailTEController,
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: const InputDecoration(hintText: 'Email'),
+                    controller: passwordTEController,
+                    decoration: const InputDecoration(hintText: 'password'),
+                  ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: confirmpasswordTEController,
+                    decoration:
+                        const InputDecoration(hintText: 'confirom password'),
                   ),
                   const SizedBox(height: 16),
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => PinVarificationScreen(),
-                          ),
-                        );
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const SingInScreen(),
+                            ),
+                            (route) => false);
                       },
-                      child: const Icon(Icons.arrow_circle_right_outlined),
+                      child: const Text("Confirom"),
                     ),
                   ),
                   const SizedBox(
@@ -78,9 +82,9 @@ class _EmailVarificationScreenState extends State<EmailVarificationScreen> {
                           Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => SingInScreen(),
+                                builder: (context) => const SingInScreen(),
                               ),
-                                  (route) => false);
+                              (route) => false);
                         },
                         child: const Text('Sing In'),
                       ),
@@ -97,7 +101,9 @@ class _EmailVarificationScreenState extends State<EmailVarificationScreen> {
 
   @override
   void dispose() {
+    passwordTEController.dispose();
+    confirmpasswordTEController.dispose();
+
     super.dispose();
-    _emailTEController.dispose();
   }
 }
