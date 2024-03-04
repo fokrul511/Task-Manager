@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:task_manager/presentation/screens/pin_varification_screen.dart';
 import 'package:task_manager/presentation/screens/sing_in_screen.dart';
-import 'package:task_manager/presentation/screens/sing_up_screen.dart';
 import 'package:task_manager/presentation/widgets/background_widget.dart';
 
 class EmailVarificationScreen extends StatefulWidget {
@@ -53,7 +52,7 @@ class _EmailVarificationScreenState extends State<EmailVarificationScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => PinVarificationScreen(),
+                            builder: (context) => const PinVarificationScreen(),
                           ),
                         );
                       },
@@ -78,7 +77,7 @@ class _EmailVarificationScreenState extends State<EmailVarificationScreen> {
                           Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => SingInScreen(),
+                                builder: (context) => const SingInScreen(),
                               ),
                                   (route) => false);
                         },

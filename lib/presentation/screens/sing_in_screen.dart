@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:task_manager/presentation/screens/email_varification_screen.dart';
+import 'package:task_manager/presentation/screens/main_bottom_nav_screen.dart';
 import 'package:task_manager/presentation/screens/sing_up_screen.dart';
 import 'package:task_manager/presentation/widgets/background_widget.dart';
 
@@ -48,7 +49,14 @@ class _SingInScreenState extends State<SingInScreen> {
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MainBottomNavigationScreen(),
+                          ),
+                        );
+                      },
                       child: const Icon(Icons.arrow_circle_right_outlined),
                     ),
                   ),
@@ -58,7 +66,11 @@ class _SingInScreenState extends State<SingInScreen> {
                   Center(
                     child: TextButton(
                       onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => EmailVarificationScreen(),));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => EmailVarificationScreen(),
+                            ));
                       },
                       style: TextButton.styleFrom(
                         foregroundColor: Colors.grey,
