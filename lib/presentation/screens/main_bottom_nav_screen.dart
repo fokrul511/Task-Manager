@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:task_manager/presentation/screens/new_task_screen.dart';
 import 'package:task_manager/presentation/utils/app_color.dart';
 
 class MainBottomNavigationScreen extends StatefulWidget {
@@ -12,6 +13,12 @@ class MainBottomNavigationScreen extends StatefulWidget {
 class _MainBottomNavigationScreenState
     extends State<MainBottomNavigationScreen> {
   int _currentSelectedIndex = 0;
+  List<Widget> _screens = [
+    NewTaskScreen(),
+    Center(child: Text("Completed"),),
+    NewTaskScreen(),
+    NewTaskScreen(),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +28,7 @@ class _MainBottomNavigationScreenState
         selectedItemColor: AppColors.themColor,
         unselectedItemColor: Colors.grey,
         showSelectedLabels: true,
+        showUnselectedLabels: true,
         onTap: (index) {
           _currentSelectedIndex = index;
           if (mounted) {
@@ -28,12 +36,13 @@ class _MainBottomNavigationScreenState
           }
         },
         items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+          BottomNavigationBarItem(icon: Icon(Icons.file_copy_outlined), label: "New"),
+          BottomNavigationBarItem(icon: Icon(Icons.bookmarks_outlined), label: "Completed"),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Progress"),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Cancled"),
         ],
       ),
+      body: _screens[_currentSelectedIndex],
     );
   }
 }

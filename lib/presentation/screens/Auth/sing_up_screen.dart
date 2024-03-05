@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:task_manager/presentation/screens/sing_in_screen.dart';
 import 'package:task_manager/presentation/widgets/background_widget.dart';
 
 class SingUpScreen extends StatefulWidget {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:task_manager/presentation/screens/sing_in_screen.dart';
+import 'package:task_manager/presentation/screens/Auth/sing_in_screen.dart';
 import 'package:task_manager/presentation/widgets/background_widget.dart';
-import '../widgets/app_logo.dart';
+import '../../widgets/app_logo.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
