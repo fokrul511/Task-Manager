@@ -52,7 +52,7 @@ class _SingInScreenState extends State<SingInScreen> {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                             builder: (context) => MainBottomNavigationScreen(),

@@ -14,10 +14,10 @@ class _MainBottomNavigationScreenState
     extends State<MainBottomNavigationScreen> {
   int _currentSelectedIndex = 0;
   List<Widget> _screens = [
-    NewTaskScreen(),
-    Center(child: Text("Completed"),),
-    NewTaskScreen(),
-    NewTaskScreen(),
+    const NewTaskScreen(),
+    const Center(child: Text("Completed"),),
+    const NewTaskScreen(),
+    const NewTaskScreen(),
   ];
 
   @override
@@ -36,10 +36,10 @@ class _MainBottomNavigationScreenState
           }
         },
         items: [
-          BottomNavigationBarItem(icon: Icon(Icons.file_copy_outlined), label: "New"),
-          BottomNavigationBarItem(icon: Icon(Icons.bookmarks_outlined), label: "Completed"),
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Progress"),
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Cancled"),
+          const BottomNavigationBarItem(icon: Icon(Icons.file_copy_outlined), label: "New"),
+          const BottomNavigationBarItem(icon: Icon(Icons.done_all), label: "Completed"),
+          const BottomNavigationBarItem(icon: Icon(Icons.more_horiz), label: "Progress"),
+          const BottomNavigationBarItem(icon: Icon(Icons.close_rounded), label: "Cancled"),
         ],
       ),
       body: _screens[_currentSelectedIndex],
