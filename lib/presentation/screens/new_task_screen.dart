@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:task_manager/presentation/widgets/background_widget.dart';
 import 'package:task_manager/presentation/widgets/profile_app_bar.dart';
@@ -26,7 +24,7 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
               child: ListView.builder(
                 itemCount: 10,
                 itemBuilder: (context, index) {
-                  return TaskCard();
+                  return const TaskCard();
                 },
               ),
             )
@@ -35,7 +33,7 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }
