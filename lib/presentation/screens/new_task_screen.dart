@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:task_manager/presentation/utils/app_color.dart';
 import 'package:task_manager/presentation/widgets/background_widget.dart';
 import 'package:task_manager/presentation/widgets/profile_app_bar.dart';
 
@@ -17,11 +15,25 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
     return Scaffold(
       appBar: profileAppBar,
       body: BackgroundWidget(
-        child: Column(
-          children: [],
+        child: const Column(
+          children: [
+            Card(
+              child: Column(
+                children: [
+                  Text(
+                    '12',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text("New"),
+                ],
+              ),
+            )
+          ],
         ),
       ),
     );
   }
-
 }
