@@ -1,6 +1,9 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:task_manager/presentation/widgets/background_widget.dart';
 import 'package:task_manager/presentation/widgets/profile_app_bar.dart';
+import 'package:task_manager/presentation/widgets/task_card.dart';
 import 'package:task_manager/presentation/widgets/task_counter_card.dart';
 
 class NewTaskScreen extends StatefulWidget {
@@ -18,21 +21,26 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
       body: BackgroundWidget(
         child: Column(
           children: [
-            TaskCounterSection(),
+            taskCounterSection,
+            Expanded(
+              child: ListView.builder(
+                itemCount: 10,
+                itemBuilder: (context, index) {
+                  return TaskCard();
+                },
+              ),
+            )
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: Icon(Icons.add),
+      ),
     );
   }
-}
 
-class TaskCounterSection extends StatelessWidget {
-  const TaskCounterSection({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
+  Widget get taskCounterSection {
     return SizedBox(
       height: 110,
       child: ListView.separated(
@@ -53,4 +61,3 @@ class TaskCounterSection extends StatelessWidget {
     );
   }
 }
-
