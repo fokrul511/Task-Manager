@@ -1,5 +1,6 @@
-
 import 'package:flutter/material.dart';
+import 'package:task_manager/app.dart';
+import 'package:task_manager/presentation/screens/Auth/sing_in_screen.dart';
 import 'package:task_manager/presentation/utils/app_color.dart';
 
 PreferredSizeWidget get profileAppBar {
@@ -32,7 +33,14 @@ PreferredSizeWidget get profileAppBar {
           ),
         ),
         IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushAndRemoveUntil(
+                TaskManager.navigatorKey.currentState!.context,
+                MaterialPageRoute(
+                  builder: (context) => SingInScreen(),
+                ),
+                (route) => false);
+          },
           icon: const Icon(
             Icons.logout,
             color: Colors.white,
