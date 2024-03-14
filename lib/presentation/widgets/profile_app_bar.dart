@@ -5,6 +5,7 @@ import 'package:task_manager/presentation/utils/app_color.dart';
 
 PreferredSizeWidget get profileAppBar {
   return AppBar(
+    automaticallyImplyLeading: false,
     backgroundColor: AppColors.themColor,
     title: Row(
       crossAxisAlignment: CrossAxisAlignment.center,
