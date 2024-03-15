@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-
-import 'package:task_manager/presentation/screens/main_bottom_nav_screen.dart';
+import 'package:task_manager/data/models/network_caller.dart';
+import 'package:task_manager/data/service/response_object.dart';
+import 'package:task_manager/data/utility/urls.dart';
 import 'package:task_manager/presentation/screens/Auth/sing_up_screen.dart';
+import 'package:task_manager/presentation/screens/main_bottom_nav_screen.dart';
 import 'package:task_manager/presentation/widgets/background_widget.dart';
-
+import 'package:task_manager/presentation/widgets/snack_bar_message.dart';
 import 'email_varification_screen.dart';
 
 class SingInScreen extends StatefulWidget {
@@ -17,6 +19,7 @@ class _SingInScreenState extends State<SingInScreen> {
   final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
   final TextEditingController _emailTEController = TextEditingController();
   final TextEditingController _passwordTEController = TextEditingController();
+  bool _isSinInLoding = false;
 
   @override
   Widget build(BuildContext context) {
@@ -35,13 +38,26 @@ class _SingInScreenState extends State<SingInScreen> {
                       style: Theme.of(context).textTheme.titleLarge),
                   const SizedBox(height: 30),
                   TextFormField(
+                    validator: (String? value) {
+                      if (value?.trim().isEmpty ?? true) {
+                        return "Enter Your Email";
+                      }
+                      return null;
+                    },
                     controller: _emailTEController,
                     keyboardType: TextInputType.emailAddress,
                     decoration: const InputDecoration(hintText: 'Email'),
                   ),
                   const SizedBox(height: 10),
                   TextFormField(
+                    validator: (String? value) {
+                      if (value?.trim().isEmpty ?? true) {
+                        return "Enter Your Email";
+                      }
+                      return null;
+                    },
                     controller: _passwordTEController,
+                    obscuringCharacter: "*",
                     obscureText: true,
                     decoration: const InputDecoration(
                       hintText: 'Password',
@@ -50,16 +66,19 @@ class _SingInScreenState extends State<SingInScreen> {
                   const SizedBox(height: 16),
                   SizedBox(
                     width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => MainBottomNavigationScreen(),
-                          ),
-                        );
-                      },
-                      child: const Icon(Icons.arrow_circle_right_outlined),
+                    child: Visibility(
+                      visible: _isSinInLoding == false,
+                      replacement: const Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          if (_globalKey.currentState!.validate()) {
+                            _singIn();
+                          }
+                        },
+                        child: const Icon(Icons.arrow_circle_right_outlined),
+                      ),
                     ),
                   ),
                   const SizedBox(
@@ -114,6 +133,35 @@ class _SingInScreenState extends State<SingInScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> _singIn() async {
+    _isSinInLoding = true;
+    setState(() {});
+    Map<String, dynamic> inputPrams = {
+      "email": _emailTEController.text.trim(),
+      "password": _passwordTEController.text,
+    };
+    final ResponseObject response =
+        await NetworkCaller.postRequest(Urls.login, inputPrams);
+    _isSinInLoding = false;
+    setState(() {});
+
+    if (response.isSuccess) {
+      if (!mounted) {
+        return;
+      }
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) => MainBottomNavigationScreen(),
+          ),
+          (route) => false);
+    } else {
+      if (mounted) {
+        snackbarMessage(context, "Login Faild!", true);
+      }
+    }
   }
 
   @override

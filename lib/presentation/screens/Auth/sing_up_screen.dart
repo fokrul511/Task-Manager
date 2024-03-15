@@ -19,6 +19,7 @@ class _SingUpScreenState extends State<SingUpScreen> {
   final TextEditingController _firstNameTEController = TextEditingController();
   final TextEditingController _lastNameTEController = TextEditingController();
   final TextEditingController _mobileTEController = TextEditingController();
+  bool _isRegistionLoding = false;
 
   @override
   Widget build(BuildContext context) {
@@ -113,33 +114,19 @@ class _SingUpScreenState extends State<SingUpScreen> {
                 const SizedBox(height: 16),
                 SizedBox(
                   width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      if (_globalKey.currentState!.validate()) {
-                        Map<String, dynamic> inpurPrams = {
-                          "email": _emailTEController.text.trim(),
-                          "firstName": _firstNameTEController.text.trim(),
-                          "lastName": _lastNameTEController.text.trim(),
-                          "mobile": _mobileTEController.text.trim(),
-                          "password": _passwordTEController.text.trim(),
-                          // "photo": ""
-                        };
-                        final ResponseObject response =
-                            await NetworkCaller.postRequest(
-                                Urls.registio, inpurPrams);
-
-                        if (mounted) {
-                          snackbarMessage(context, "Registration Successfuly Please Login");
-                          Navigator.pop(context);
-                        } else {
-                          if (mounted) {
-                            snackbarMessage(
-                                context, "Registration Faild! please try again",true);
-                          }
+                  child: Visibility(
+                    visible: _isRegistionLoding == false,
+                    replacement: const Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        if (_globalKey.currentState!.validate()) {
+                          _singUp();
                         }
-                      }
-                    },
-                    child: const Icon(Icons.arrow_circle_right_outlined),
+                      },
+                      child: const Icon(Icons.arrow_circle_right_outlined),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 30),
@@ -167,6 +154,31 @@ class _SingUpScreenState extends State<SingUpScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> _singUp() async {
+    _isRegistionLoding = true;
+    setState(() {});
+    Map<String, dynamic> inpurPrams = {
+      "email": _emailTEController.text.trim(),
+      "firstName": _firstNameTEController.text.trim(),
+      "lastName": _lastNameTEController.text.trim(),
+      "mobile": _mobileTEController.text.trim(),
+      "password": _passwordTEController.text.trim(),
+      // "photo": ""
+    };
+    final ResponseObject response =
+        await NetworkCaller.postRequest(Urls.registio, inpurPrams);
+    _isRegistionLoding = false;
+    setState(() {});
+    if (mounted) {
+      snackbarMessage(context, "Registration Successfuly Please Login");
+      Navigator.pop(context);
+    } else {
+      if (mounted) {
+        snackbarMessage(context, "Registration Faild! please try again", true);
+      }
+    }
   }
 
   @override
