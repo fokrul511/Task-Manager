@@ -42,9 +42,19 @@ class NetworkCaller {
         final decodeResponse = jsonDecode(response.body);
         return ResponseObject(
             statusCode: 200, responsBody: decodeResponse, isSuccess: true);
+      } else if (response.statusCode == 401) {
+        return ResponseObject(
+          statusCode: response.statusCode,
+          responsBody: "",
+          isSuccess: false,
+          errorMessage: "Email/Password Incorrect",
+        );
       } else {
         return ResponseObject(
-            statusCode: response.statusCode, responsBody: "", isSuccess: false);
+          statusCode: response.statusCode,
+          responsBody: "",
+          isSuccess: false,
+        );
       }
     } catch (e) {
       log(e.toString());
