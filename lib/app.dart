@@ -34,6 +34,7 @@ class _TaskManagerState extends State<TaskManager> {
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
+            foregroundColor: Colors.white,
             backgroundColor: AppColors.themColor,
             padding: const EdgeInsets.symmetric(
               horizontal: 16,

@@ -37,7 +37,7 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => AddNewTaskScreen(),
+              builder: (context) => const AddNewTaskScreen(),
             ),
           );
         },
