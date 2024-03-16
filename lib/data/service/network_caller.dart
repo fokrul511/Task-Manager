@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:task_manager/data/service/response_object.dart';
+import 'package:task_manager/data/models/response_object.dart';
 import 'package:http/http.dart';
 
 class NetworkCaller {

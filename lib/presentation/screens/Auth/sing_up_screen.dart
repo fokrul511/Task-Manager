@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:task_manager/data/models/network_caller.dart';
-import 'package:task_manager/data/service/response_object.dart';
+import 'package:task_manager/data/service/network_caller.dart';
+import 'package:task_manager/data/models/response_object.dart';
 import 'package:task_manager/data/utility/urls.dart';
 import 'package:task_manager/presentation/widgets/background_widget.dart';
 import 'package:task_manager/presentation/widgets/snack_bar_message.dart';
