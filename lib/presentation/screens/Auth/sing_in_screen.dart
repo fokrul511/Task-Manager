@@ -3,6 +3,7 @@ import 'package:task_manager/data/models/login_response.dart';
 import 'package:task_manager/data/service/network_caller.dart';
 import 'package:task_manager/data/models/response_object.dart';
 import 'package:task_manager/data/utility/urls.dart';
+import 'package:task_manager/presentation/controllers/auth_controller.dart';
 import 'package:task_manager/presentation/screens/Auth/sing_up_screen.dart';
 import 'package:task_manager/presentation/screens/main_bottom_nav_screen.dart';
 import 'package:task_manager/presentation/widgets/background_widget.dart';
@@ -152,13 +153,20 @@ class _SingInScreenState extends State<SingInScreen> {
       if (!mounted) {
         return;
       }
+      LoginResponse loginResponse =
+          LoginResponse.fromJson(response.responsBody);
+      //save cecsh data
+      await AuthController.saveUserData(loginResponse.userdata!);
+      await AuthController.saveUserToken(loginResponse.token!);
 
-      Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(
-            builder: (context) => MainBottomNavigationScreen(),
-          ),
-          (route) => false);
+      if (mounted) {
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const MainBottomNavigationScreen(),
+            ),
+            (route) => false);
+      }
     } else {
       if (mounted) {
         snackbarMessage(context, response.errorMessage ?? "Login Faild!", true);

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:task_manager/presentation/screens/Auth/splash_screen.dart';
+import 'package:task_manager/presentation/screens/splash_screen.dart';
 import 'package:task_manager/presentation/utils/app_color.dart';
 
 class TaskManager extends StatefulWidget {
