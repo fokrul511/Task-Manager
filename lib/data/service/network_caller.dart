@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:task_manager/data/models/response_object.dart';
 import 'package:http/http.dart';
+import 'package:task_manager/presentation/controllers/auth_controller.dart';
 
 class NetworkCaller {
   static Future<ResponseObject> getRequest(String url) async {
@@ -34,7 +35,10 @@ class NetworkCaller {
       final Response response = await post(
         Uri.parse(url),
         body: jsonEncode(body),
-        headers: {'content-type': "Application/json"},
+        headers: {
+          'content-type': "Application/json",
+          "token": AuthController.accessToken ?? ""
+        },
       );
       log(response.statusCode.toString());
       log(response.body.toString());
