@@ -8,49 +8,55 @@ PreferredSizeWidget get profileAppBar {
   return AppBar(
     automaticallyImplyLeading: false,
     backgroundColor: AppColors.themColor,
-    title: Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        const CircleAvatar(),
-        const SizedBox(
-          width: 10,
-        ),
-        const Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Rabbil hasan",
-                style: TextStyle(fontSize: 18, color: Colors.white),
-              ),
-              Text(
-                "rabbil@gmail.com",
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w400,
-                  color: Colors.white,
-                ),
-              ),
-            ],
+    title: GestureDetector(
+      onTap: (){
+        // Navigator.push(context, MaterialPageRoute(builder: (context) => ,))
+      },
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+           CircleAvatar(
           ),
-        ),
-        IconButton(
-          onPressed: () {
-            AuthController.clearUserData();
-
-            Navigator.pushAndRemoveUntil(
-                TaskManager.navigatorKey.currentState!.context,
-                MaterialPageRoute(
-                  builder: (context) => const SingInScreen(),
-                ),
-                (route) => false);
-          },
-          icon: const Icon(
-            Icons.logout,
-            color: Colors.white,
+          const SizedBox(
+            width: 10,
           ),
-        )
-      ],
+           Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  AuthController.userData!.fullName,
+                  style: TextStyle(fontSize: 18, color: Colors.white),
+                ),
+                Text(
+                  "${AuthController.userData!.email}",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          IconButton(
+            onPressed: () {
+              AuthController.clearUserData();
+      
+              Navigator.pushAndRemoveUntil(
+                  TaskManager.navigatorKey.currentState!.context,
+                  MaterialPageRoute(
+                    builder: (context) => const SingInScreen(),
+                  ),
+                  (route) => false);
+            },
+            icon: const Icon(
+              Icons.logout,
+              color: Colors.white,
+            ),
+          )
+        ],
+      ),
     ),
   );
 }
