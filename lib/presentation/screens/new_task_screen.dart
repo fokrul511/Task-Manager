@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:task_manager/data/models/count_by_status_warpper.dart';
+import 'package:task_manager/data/models/task_list_wrapper.dart';
 import 'package:task_manager/data/service/network_caller.dart';
 import 'package:task_manager/data/utility/urls.dart';
 import 'package:task_manager/presentation/screens/add_new_task.dart';
@@ -20,6 +21,8 @@ class NewTaskScreen extends StatefulWidget {
 class _NewTaskScreenState extends State<NewTaskScreen> {
   bool getAllTaskCountByStatusInprogress = false;
   CountByStatusWarpper? _countByStatusWarpper = CountByStatusWarpper();
+  TaskListWrapper _newTaskListWrapper = TaskListWrapper();
+  bool newTaskListInProgress = false;
 
   @override
   void initState() {
@@ -101,11 +104,29 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
       getAllTaskCountByStatusInprogress = false;
       setState(() {});
     } else {
+      getAllTaskCountByStatusInprogress = false;
+      setState(() {});
       if (mounted) {
-        getAllTaskCountByStatusInprogress = false;
-        setState(() {});
         snackbarMessage(context,
             response.errorMessage ?? 'Get task count by status has been faild');
+      }
+    }
+  }
+
+  Future<void> _getAllNewTaskList() async {
+    newTaskListInProgress = true;
+    setState(() {});
+    final response = await NetworkCaller.getRequest(Urls.newTaskList);
+    if (response.isSuccess) {
+      _newTaskListWrapper = TaskListWrapper.fromJson(response.responsBody);
+      newTaskListInProgress = false;
+      setState(() {});
+    } else {
+      newTaskListInProgress = false;
+      setState(() {});
+      if (mounted) {
+        snackbarMessage(context,
+            response.errorMessage ?? 'Get new task List has been faild');
       }
     }
   }

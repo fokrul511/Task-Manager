@@ -4,5 +4,6 @@ class Urls{
   static String login = "$_baseUrl/login";
   static String addNewTask = "$_baseUrl/createTask";
   static String taskcountBystatus = "$_baseUrl/taskStatusCount";
+  static String newTaskList = "$_baseUrl//listTaskByStatus/New";
 
 }

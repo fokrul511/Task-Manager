@@ -97,6 +97,7 @@ class NetworkCaller {
 
   static void _moveTosinIn() async {
     await AuthController.clearUserData();
+
     Navigator.pushAndRemoveUntil(
         TaskManager.navigatorKey.currentState!.context,
         MaterialPageRoute(

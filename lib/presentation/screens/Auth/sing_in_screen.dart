@@ -144,8 +144,9 @@ class _SingInScreenState extends State<SingInScreen> {
       "email": _emailTEController.text.trim(),
       "password": _passwordTEController.text,
     };
-    final ResponseObject response =
-        await NetworkCaller.postRequest(Urls.login, inputPrams, fromsingIn: true);
+    final ResponseObject response = await NetworkCaller.postRequest(
+        Urls.login, inputPrams,
+        fromsingIn: true);
     _isSinInLoding = false;
     setState(() {});
 
