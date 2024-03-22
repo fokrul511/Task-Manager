@@ -8,7 +8,7 @@ import 'package:task_manager/presentation/widgets/profile_app_bar.dart';
 import 'package:task_manager/presentation/widgets/snack_bar_message.dart';
 
 class AddNewTaskScreen extends StatefulWidget {
-  const AddNewTaskScreen({super.key});
+  const  AddNewTaskScreen({super.key});
 
   @override
   State<AddNewTaskScreen> createState() => _AddNewTaskScreenState();
@@ -82,6 +82,7 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
                         onPressed: () {
                           if (_globalKey.currentState!.validate()) {
                             _addNewTask();
+
                           }
                         },
                         child: const Icon(Icons.arrow_circle_right_outlined),

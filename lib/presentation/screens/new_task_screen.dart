@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:task_manager/data/models/count_by_status_warpper.dart';
 import 'package:task_manager/data/models/task_list_wrapper.dart';
@@ -23,11 +22,18 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
   CountByStatusWarpper? _countByStatusWarpper = CountByStatusWarpper();
   TaskListWrapper _newTaskListWrapper = TaskListWrapper();
   bool newTaskListInProgress = false;
+  bool deleaTaskListInProgress = false;
+  bool updateTaskSatusListInProgress = false;
 
   @override
   void initState() {
     super.initState();
+    getDataFormApi();
+  }
+
+  void getDataFormApi() {
     _getAllTaskCountByStatus();
+    _getAllNewTaskList();
   }
 
   @override
@@ -46,11 +52,29 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
               child: taskCounterSection,
             ),
             Expanded(
-              child: ListView.builder(
-                itemCount: 10,
-                itemBuilder: (context, index) {
-                  return const TaskCard();
-                },
+              child: Visibility(
+                visible: newTaskListInProgress == false &&
+                    deleaTaskListInProgress == false && updateTaskSatusListInProgress ==false,
+                replacement: const Center(child: CircularProgressIndicator()),
+                child: RefreshIndicator(
+                  onRefresh: () async => getDataFormApi(),
+                  child: ListView.builder(
+                    itemCount: _newTaskListWrapper.taskList?.length ?? 0,
+                    itemBuilder: (context, index) {
+                      return TaskCard(
+                        taskItem: _newTaskListWrapper.taskList![index],
+                        onDelete: () {
+                          _deleateTaskbyId(
+                              _newTaskListWrapper.taskList![index].sId!);
+                        },
+                        onEdit: () {
+                          _showUpdateStatusDiloge(
+                              _newTaskListWrapper.taskList![index].sId!);
+                        },
+                      );
+                    },
+                  ),
+                ),
               ),
             )
           ],
@@ -58,6 +82,7 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+          //Todo: refress full apps ,add new any thing.
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -67,6 +92,47 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
         },
         child: const Icon(Icons.add),
       ),
+    );
+  }
+
+  void _showUpdateStatusDiloge(String id) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text("Select Status"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const ListTile(
+                title: Text("New"),
+                trailing: Icon(Icons.check),
+              ),
+              ListTile(
+                title: const Text("Completed"),
+                onTap: () {
+                  _updateTaskById(id, "Completed");
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                title: const Text("Progress"),
+                onTap: () {
+                  _updateTaskById(id, "Progress");
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                title: const Text("Cancled"),
+                onTap: () {
+                  _updateTaskById(id, "Cancled");
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 
@@ -127,6 +193,40 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
       if (mounted) {
         snackbarMessage(context,
             response.errorMessage ?? 'Get new task List has been faild');
+      }
+    }
+  }
+
+  Future<void> _deleateTaskbyId(String id) async {
+    deleaTaskListInProgress = true;
+    setState(() {});
+
+    final response = await NetworkCaller.getRequest(Urls.deleateTaskList(id));
+    deleaTaskListInProgress = false;
+    setState(() {});
+    if (response.isSuccess) {
+      getDataFormApi();
+    } else {
+      if (mounted) {
+        snackbarMessage(
+            context, response.errorMessage ?? 'Delete Task has been faild');
+      }
+    }
+  }
+
+  Future<void> _updateTaskById(String id, String status) async {
+    updateTaskSatusListInProgress = true;
+    setState(() {});
+    final response =
+        await NetworkCaller.getRequest(Urls.updateTaskStatus(id, status));
+    updateTaskSatusListInProgress = false;
+    setState(() {});
+    if (response.isSuccess) {
+      getDataFormApi();
+    } else {
+      if (mounted) {
+        snackbarMessage(
+            context, response.errorMessage ?? 'Update Task Status been faild');
       }
     }
   }

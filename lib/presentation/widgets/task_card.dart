@@ -1,37 +1,45 @@
 import 'package:flutter/material.dart';
+import 'package:task_manager/data/models/task_item.dart';
 
 class TaskCard extends StatelessWidget {
   const TaskCard({
     super.key,
+    required this.taskItem,
+    required this.onDelete,
+    required this.onEdit,
   });
+
+  final TaskItem taskItem;
+  final VoidCallback onDelete;
+  final VoidCallback onEdit;
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Title Will be here",
-              style: TextStyle(
+              taskItem.title ?? "",
+              style: const TextStyle(
                 fontWeight: FontWeight.bold,
               ),
             ),
-            Text("Discription Will be here"),
-            Text("date: 12-11-2024"),
+            Text(taskItem.description ?? ""),
+            Text("date: ${taskItem.createdDate}"),
             Row(
               children: [
                 Chip(
-                  label: Text("New"),
+                  label: Text(taskItem.status ?? ""),
                 ),
-                Spacer(),
-                IconButton(onPressed: () {}, icon: Icon(Icons.edit)),
+                const Spacer(),
+                IconButton(onPressed: onEdit, icon: const Icon(Icons.edit)),
                 IconButton(
-                    onPressed: () {},
-                    icon: Icon(Icons.delete_outline_outlined)),
+                    onPressed: onDelete,
+                    icon: const Icon(Icons.delete_outline_outlined)),
               ],
             )
           ],
