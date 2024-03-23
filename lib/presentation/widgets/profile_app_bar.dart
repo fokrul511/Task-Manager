@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:task_manager/app.dart';
 import 'package:task_manager/presentation/controllers/auth_controller.dart';
@@ -10,18 +12,23 @@ PreferredSizeWidget get profileAppBar {
     automaticallyImplyLeading: false,
     backgroundColor: AppColors.themColor,
     title: GestureDetector(
-      onTap: (){
-        Navigator.push(TaskManager.navigatorKey.currentState!.context, MaterialPageRoute(builder: (context) => UpdateProfileScreen(),));
+      onTap: () {
+        Navigator.push(
+            TaskManager.navigatorKey.currentState!.context,
+            MaterialPageRoute(
+              builder: (context) => UpdateProfileScreen(),
+            ));
       },
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-           CircleAvatar(
+          CircleAvatar(
+            backgroundImage: MemoryImage(base64Decode(AuthController.userData!.photo.toString())),
           ),
           const SizedBox(
             width: 10,
           ),
-           Expanded(
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -43,7 +50,7 @@ PreferredSizeWidget get profileAppBar {
           IconButton(
             onPressed: () {
               AuthController.clearUserData();
-      
+
               Navigator.pushAndRemoveUntil(
                   TaskManager.navigatorKey.currentState!.context,
                   MaterialPageRoute(
