@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:task_manager/data/models/task_list_wrapper.dart';
+import 'package:task_manager/data/service/network_caller.dart';
+import 'package:task_manager/data/utility/urls.dart';
 import 'package:task_manager/presentation/widgets/background_widget.dart';
+import 'package:task_manager/presentation/widgets/empty_list_widget.dart';
 import 'package:task_manager/presentation/widgets/profile_app_bar.dart';
+import 'package:task_manager/presentation/widgets/snack_bar_message.dart';
 import 'package:task_manager/presentation/widgets/task_card.dart';
 import 'package:task_manager/presentation/widgets/task_counter_card.dart';
 
@@ -12,6 +17,15 @@ class ProgressTaskScreen extends StatefulWidget {
 }
 
 class _ProgressTaskScreenState extends State<ProgressTaskScreen> {
+  bool _getProgressTaskListInProgress = false;
+  TaskListWrapper _progressTaskListWrapper = TaskListWrapper();
+
+  @override
+  void initState() {
+    super.initState();
+    _getAllProgressTaskList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,11 +34,32 @@ class _ProgressTaskScreenState extends State<ProgressTaskScreen> {
         child: Column(
           children: [
             Expanded(
-              child: ListView.builder(
-                itemCount: 10,
-                itemBuilder: (context, index) {
-                  // return const TaskCard();
+              child: RefreshIndicator(
+                onRefresh: ()async{
+                  _getAllProgressTaskList();
                 },
+                child: Visibility(
+                  visible: _getProgressTaskListInProgress == false,
+                  replacement: const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                  child: Visibility(
+                    visible:
+                    _progressTaskListWrapper.taskList?.isNotEmpty ?? false,
+                    replacement: EmptyListWidget(),
+                    child: ListView.builder(
+                      itemCount: _progressTaskListWrapper.taskList?.length ?? 0,
+                      itemBuilder: (context, index) {
+                        return TaskCard(
+                          taskItem: _progressTaskListWrapper.taskList![index],
+                          refreshList: () {
+                            _getAllProgressTaskList();
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                ),
               ),
             )
           ],
@@ -53,4 +88,25 @@ class _ProgressTaskScreenState extends State<ProgressTaskScreen> {
       ),
     );
   }
+
+  Future<void> _getAllProgressTaskList() async {
+    _getProgressTaskListInProgress = true;
+    setState(() {});
+    final response = await NetworkCaller.getRequest(Urls.progressTaskList);
+    if (response.isSuccess) {
+      _progressTaskListWrapper =
+          TaskListWrapper.fromJson(response.responsBody);
+      _getProgressTaskListInProgress = false;
+      setState(() {});
+    } else {
+      _getProgressTaskListInProgress = false;
+      setState(() {});
+      if (mounted) {
+        snackbarMessage(context,
+            response.errorMessage ?? 'Get Progress task List has been faild');
+      }
+    }
+  }
 }
+
+
