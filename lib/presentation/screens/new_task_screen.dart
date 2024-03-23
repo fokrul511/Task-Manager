@@ -5,6 +5,7 @@ import 'package:task_manager/data/service/network_caller.dart';
 import 'package:task_manager/data/utility/urls.dart';
 import 'package:task_manager/presentation/screens/add_new_task.dart';
 import 'package:task_manager/presentation/widgets/background_widget.dart';
+import 'package:task_manager/presentation/widgets/empty_list_widget.dart';
 import 'package:task_manager/presentation/widgets/profile_app_bar.dart';
 import 'package:task_manager/presentation/widgets/snack_bar_message.dart';
 import 'package:task_manager/presentation/widgets/task_card.dart';
@@ -53,26 +54,24 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
             ),
             Expanded(
               child: Visibility(
-                visible: newTaskListInProgress == false &&
-                    deleaTaskListInProgress == false && updateTaskSatusListInProgress ==false,
+                visible: newTaskListInProgress == false,
                 replacement: const Center(child: CircularProgressIndicator()),
                 child: RefreshIndicator(
                   onRefresh: () async => getDataFormApi(),
-                  child: ListView.builder(
-                    itemCount: _newTaskListWrapper.taskList?.length ?? 0,
-                    itemBuilder: (context, index) {
-                      return TaskCard(
-                        taskItem: _newTaskListWrapper.taskList![index],
-                        onDelete: () {
-                          _deleateTaskbyId(
-                              _newTaskListWrapper.taskList![index].sId!);
-                        },
-                        onEdit: () {
-                          _showUpdateStatusDiloge(
-                              _newTaskListWrapper.taskList![index].sId!);
-                        },
-                      );
-                    },
+                  child: Visibility(
+                    visible: _newTaskListWrapper.taskList?.isNotEmpty ?? false,
+                    replacement: const EmptyListWidget(),
+                    child: ListView.builder(
+                      itemCount: _newTaskListWrapper.taskList?.length ?? 0,
+                      itemBuilder: (context, index) {
+                        return TaskCard(
+                          taskItem: _newTaskListWrapper.taskList![index],
+                          refreshList: () {
+                            getDataFormApi();
+                          },
+                        );
+                      },
+                    ),
                   ),
                 ),
               ),
@@ -81,58 +80,20 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
+        onPressed: () async {
           //Todo: refress full apps ,add new any thing.
-          Navigator.push(
+          final result = await Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => const AddNewTaskScreen(),
             ),
           );
+          if(result != null &&result ==true){
+            getDataFormApi();
+          }
         },
         child: const Icon(Icons.add),
       ),
-    );
-  }
-
-  void _showUpdateStatusDiloge(String id) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text("Select Status"),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const ListTile(
-                title: Text("New"),
-                trailing: Icon(Icons.check),
-              ),
-              ListTile(
-                title: const Text("Completed"),
-                onTap: () {
-                  _updateTaskById(id, "Completed");
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                title: const Text("Progress"),
-                onTap: () {
-                  _updateTaskById(id, "Progress");
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                title: const Text("Cancled"),
-                onTap: () {
-                  _updateTaskById(id, "Cancled");
-                  Navigator.pop(context);
-                },
-              ),
-            ],
-          ),
-        );
-      },
     );
   }
 
@@ -193,40 +154,6 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
       if (mounted) {
         snackbarMessage(context,
             response.errorMessage ?? 'Get new task List has been faild');
-      }
-    }
-  }
-
-  Future<void> _deleateTaskbyId(String id) async {
-    deleaTaskListInProgress = true;
-    setState(() {});
-
-    final response = await NetworkCaller.getRequest(Urls.deleateTaskList(id));
-    deleaTaskListInProgress = false;
-    setState(() {});
-    if (response.isSuccess) {
-      getDataFormApi();
-    } else {
-      if (mounted) {
-        snackbarMessage(
-            context, response.errorMessage ?? 'Delete Task has been faild');
-      }
-    }
-  }
-
-  Future<void> _updateTaskById(String id, String status) async {
-    updateTaskSatusListInProgress = true;
-    setState(() {});
-    final response =
-        await NetworkCaller.getRequest(Urls.updateTaskStatus(id, status));
-    updateTaskSatusListInProgress = false;
-    setState(() {});
-    if (response.isSuccess) {
-      getDataFormApi();
-    } else {
-      if (mounted) {
-        snackbarMessage(
-            context, response.errorMessage ?? 'Update Task Status been faild');
       }
     }
   }
