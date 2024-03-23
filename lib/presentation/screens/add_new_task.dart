@@ -24,9 +24,13 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
   @override
   Widget build(BuildContext context) {
     return PopScope(
-canPop: false,
-      onPopInvoked: (_) {
-        Navigator.pop(context, shoudRefreseNewTaskList);
+      canPop: false,
+      onPopInvoked: (didPop) {
+        if(didPop){
+          return;
+
+        }
+        Navigator.pop(context,shoudRefreseNewTaskList);
       },
       child: Scaffold(
         appBar: profileAppBar,
@@ -73,7 +77,8 @@ canPop: false,
                       },
                       controller: _descriptionTextController,
                       maxLines: 6,
-                      decoration: const InputDecoration(hintText: 'Description'),
+                      decoration:
+                          const InputDecoration(hintText: 'Description'),
                     ),
                     const SizedBox(
                       height: 16,
