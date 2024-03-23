@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:task_manager/app.dart';
 import 'package:task_manager/presentation/controllers/auth_controller.dart';
 import 'package:task_manager/presentation/screens/Auth/sing_in_screen.dart';
+import 'package:task_manager/presentation/screens/update_profile_screen.dart';
 import 'package:task_manager/presentation/utils/app_color.dart';
 
 PreferredSizeWidget get profileAppBar {
@@ -10,7 +11,7 @@ PreferredSizeWidget get profileAppBar {
     backgroundColor: AppColors.themColor,
     title: GestureDetector(
       onTap: (){
-        // Navigator.push(context, MaterialPageRoute(builder: (context) => ,))
+        Navigator.push(TaskManager.navigatorKey.currentState!.context, MaterialPageRoute(builder: (context) => UpdateProfileScreen(),));
       },
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
