@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:task_manager/controller_blinder.dart';
 import 'package:task_manager/presentation/screens/splash_screen.dart';
 import 'package:task_manager/presentation/utils/app_color.dart';
 
@@ -21,10 +22,11 @@ class _TaskManagerState extends State<TaskManager> {
       title: 'Task Manager',
       home: const SplashScreen(),
       theme: _themeData,
+      initialBinding: ControllerBlinder(),
     );
   }
 
-  ThemeData _themeData = ThemeData(
+  final ThemeData _themeData = ThemeData(
     inputDecorationTheme: InputDecorationTheme(
       contentPadding: const EdgeInsets.symmetric(
         horizontal: 24,
@@ -70,3 +72,4 @@ class _TaskManagerState extends State<TaskManager> {
     ),
   );
 }
+

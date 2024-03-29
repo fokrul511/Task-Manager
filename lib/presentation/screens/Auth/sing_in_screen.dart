@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:task_manager/data/models/login_response.dart';
-import 'package:task_manager/data/service/network_caller.dart';
-import 'package:task_manager/data/models/response_object.dart';
-import 'package:task_manager/data/utility/urls.dart';
-import 'package:task_manager/presentation/controllers/auth_controller.dart';
+import 'package:get/get.dart';
+import 'package:task_manager/presentation/controllers/sing_in_controller.dart';
 import 'package:task_manager/presentation/screens/Auth/sing_up_screen.dart';
 import 'package:task_manager/presentation/screens/main_bottom_nav_screen.dart';
 import 'package:task_manager/presentation/widgets/background_widget.dart';
@@ -21,7 +18,7 @@ class _SingInScreenState extends State<SingInScreen> {
   final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
   final TextEditingController _emailTEController = TextEditingController();
   final TextEditingController _passwordTEController = TextEditingController();
-  bool _isSinInLoding = false;
+  final SinInController _sinInController = Get.find<SinInController>();
 
   @override
   Widget build(BuildContext context) {
@@ -68,20 +65,23 @@ class _SingInScreenState extends State<SingInScreen> {
                   const SizedBox(height: 16),
                   SizedBox(
                     width: double.infinity,
-                    child: Visibility(
-                      visible: _isSinInLoding == false,
-                      replacement: const Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          if (_globalKey.currentState!.validate()) {
-                            _singIn();
-                          }
-                        },
-                        child: const Icon(Icons.arrow_circle_right_outlined),
-                      ),
-                    ),
+                    child:
+                        GetBuilder<SinInController>(builder: (sinInController) {
+                      return Visibility(
+                        visible: sinInController.inProgress == false,
+                        replacement: const Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            if (_globalKey.currentState!.validate()) {
+                              _singIn();
+                            }
+                          },
+                          child: const Icon(Icons.arrow_circle_right_outlined),
+                        ),
+                      );
+                    }),
                   ),
                   const SizedBox(
                     height: 48,
@@ -92,7 +92,8 @@ class _SingInScreenState extends State<SingInScreen> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => EmailVarificationScreen(),
+                              builder: (context) =>
+                                  const EmailVarificationScreen(),
                             ));
                       },
                       style: TextButton.styleFrom(
@@ -120,7 +121,7 @@ class _SingInScreenState extends State<SingInScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => SingUpScreen(),
+                              builder: (context) => const SingUpScreen(),
                             ),
                           );
                         },
@@ -138,28 +139,10 @@ class _SingInScreenState extends State<SingInScreen> {
   }
 
   Future<void> _singIn() async {
-    _isSinInLoding = true;
-    setState(() {});
-    Map<String, dynamic> inputPrams = {
-      "email": _emailTEController.text.trim(),
-      "password": _passwordTEController.text,
-    };
-    final ResponseObject response = await NetworkCaller.postRequest(
-        Urls.login, inputPrams,
-        fromsingIn: true);
-    _isSinInLoding = false;
-    setState(() {});
+    final result = await _sinInController.singIn(
+        _emailTEController.text.trim(), _passwordTEController.text.trim());
 
-    if (response.isSuccess) {
-      if (!mounted) {
-        return;
-      }
-      LoginResponse loginResponse =
-          LoginResponse.fromJson(response.responsBody);
-      //save cecsh data
-      await AuthController.saveUserData(loginResponse.userdata!);
-      await AuthController.saveUserToken(loginResponse.token!);
-
+    if (result) {
       if (mounted) {
         Navigator.pushAndRemoveUntil(
             context,
@@ -170,7 +153,7 @@ class _SingInScreenState extends State<SingInScreen> {
       }
     } else {
       if (mounted) {
-        snackbarMessage(context, response.errorMessage ?? "Login Faild!", true);
+        snackbarMessage(context, _sinInController.errorMessage, true);
       }
     }
   }
