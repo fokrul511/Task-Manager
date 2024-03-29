@@ -1,10 +1,10 @@
-class taskByStatusData {
+class TaskCountByStatusData {
   String? sId;
   int? sum;
 
-  taskByStatusData({this.sId, this.sum});
+  TaskCountByStatusData({this.sId, this.sum});
 
-  taskByStatusData.fromJson(Map<String, dynamic> json) {
+  TaskCountByStatusData.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     sum = json['sum'];
   }

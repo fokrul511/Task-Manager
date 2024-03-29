@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:task_manager/data/models/count_by_status_warpper.dart';
 import 'package:task_manager/data/models/task_list_wrapper.dart';
 import 'package:task_manager/data/service/network_caller.dart';
 import 'package:task_manager/data/utility/urls.dart';
+import 'package:task_manager/presentation/controllers/count_task_by_status_controller.dart';
 import 'package:task_manager/presentation/screens/add_new_task.dart';
 import 'package:task_manager/presentation/widgets/background_widget.dart';
 import 'package:task_manager/presentation/widgets/empty_list_widget.dart';
@@ -19,8 +21,6 @@ class NewTaskScreen extends StatefulWidget {
 }
 
 class _NewTaskScreenState extends State<NewTaskScreen> {
-  bool getAllTaskCountByStatusInprogress = false;
-  CountByStatusWarpper? _countByStatusWarpper = CountByStatusWarpper();
   TaskListWrapper _newTaskListWrapper = TaskListWrapper();
   bool newTaskListInProgress = false;
   bool deleaTaskListInProgress = false;
@@ -44,13 +44,17 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
       body: BackgroundWidget(
         child: Column(
           children: [
-            Visibility(
-              visible: getAllTaskCountByStatusInprogress == false,
-              replacement: const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: LinearProgressIndicator(),
-              ),
-              child: taskCounterSection,
+            GetBuilder<CountTaskByStatusController>(
+              builder: (countTaskByStatusController) {
+                return Visibility(
+                  visible: countTaskByStatusController.inProgress == false,
+                  replacement: const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: LinearProgressIndicator(),
+                  ),
+                  child: taskCounterSection,
+                );
+              }
             ),
             Expanded(
               child: Visibility(
@@ -97,7 +101,7 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
     );
   }
 
-  Widget get taskCounterSection {
+  Widget  taskCounterSection(List<TaskCountByStatusData>) {
     return SizedBox(
       height: 110,
       child: ListView.separated(

@@ -2,16 +2,16 @@ import 'package:task_manager/data/models/task_by_status_data.dart';
 
 class CountByStatusWarpper {
   String? status;
-  List<taskByStatusData>? listOfTaskbyStatusData;
+  List<TaskCountByStatusData>? listOfTaskbyStatusData;
 
   CountByStatusWarpper({this.status, this.listOfTaskbyStatusData});
 
   CountByStatusWarpper.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     if (json['data'] != null) {
-      listOfTaskbyStatusData = <taskByStatusData>[];
+      listOfTaskbyStatusData = <TaskCountByStatusData>[];
       json['data'].forEach((v) {
-        listOfTaskbyStatusData!.add(taskByStatusData.fromJson(v));
+        listOfTaskbyStatusData!.add(TaskCountByStatusData.fromJson(v));
       });
     }
   }
